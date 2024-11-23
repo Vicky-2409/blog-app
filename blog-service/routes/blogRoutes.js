@@ -15,6 +15,6 @@ router.get("/", getAllBlogs); // Get all blogs
 router.get("/:id", getBlogById); // Get blog by ID
 router.get("/:id/full", getBlogfull); // Get blog by ID
 router.put("/:id", updateBlog); // Update blog by ID
-router.delete("/:id", deleteBlog); // Delete blog by ID
+router.delete("/:id", deleteBlog); // Delete blog by id
 
 module.exports = router;
