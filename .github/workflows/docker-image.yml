@@ -3,7 +3,7 @@ name: Build and Push Docker Images for Blog Application
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build-and-push:
