@@ -11,7 +11,7 @@ services:
       - blog-db
     environment:
       - MONGO_URI=mongodb://blog-db:27017/blogdb  # Add Mongo URI for blog-db
-      - GATEWAY_URL=http://gateway:4000
+      - GATEWAY_URL=http://gateway:4000 # Add Gateway URL
     networks:
       - blog-network
 
