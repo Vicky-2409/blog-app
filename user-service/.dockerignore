@@ -1,0 +1,40 @@
+# Ignore node_modules (we'll install dependencies inside the container)
+node_modules/
+
+# Ignore npm log files
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Ignore Dockerfile and docker-compose.yml (usually not needed inside the image)
+Dockerfile
+docker-compose.yml
+
+# Ignore environment variables files
+.env
+*.env
+
+# Ignore IDE and editor folders
+.vscode/
+.idea/
+
+# Ignore temporary files created by the editor
+*~
+*.swp
+
+# Ignore logs and temporary files
+*.log
+*.bak
+*.swp
+*.tmp
+
+# Ignore any build artifacts
+/dist/
+/build/
+
+# Ignore .git directory
+.git/
+
+# Ignore any OS-specific files like .DS_Store (macOS) or Thumbs.db (Windows)
+.DS_Store
+Thumbs.db

@@ -1,0 +1,97 @@
+version: '3.7'
+
+services:
+  # Blog Service
+  blog-service:
+    build:
+      context: ./blog-service
+    ports:
+      - "4002:4002"
+    depends_on:
+      - blog-db
+    environment:
+      - MONGO_URI=mongodb://blog-db:27017/blogdb  # Add Mongo URI for blog-db
+      - GATEWAY_URL=http://gateway:4000
+    networks:
+      - blog-network
+
+  # Comment Service
+  comment-service:
+    build:
+      context: ./comment-service
+    ports:
+      - "4003:4003"
+    depends_on:
+      - comment-db
+    environment:
+      - MONGO_URI=mongodb://comment-db:27017/commentdb  # Add Mongo URI for comment-db
+    networks:
+      - blog-network
+
+  # User Service
+  user-service:
+    build:
+      context: ./user-service
+    ports:
+      - "4001:4001"
+    depends_on:
+      - user-db
+    environment:
+      - JWT_SECRET_KEY=your_secret_key_here
+      - MONGO_URI=mongodb://user-db:27017/userdb  # Add Mongo URI for user-db
+    networks:
+      - blog-network
+
+  # API Gateway
+  gateway:
+    build:
+      context: ./gateway
+    ports:
+      - "4000:4000"
+    depends_on:
+      - blog-service
+      - comment-service
+      - user-service
+    environment:
+      - JWT_SECRET_KEY=your_secret_key_here
+      - USER_SERVICE_URL=http://user-service:4001
+      - BLOG_SERVICE_URL=http://blog-service:4002
+      - COMMENT_SERVICE_URL=http://comment-service:4003
+    networks:
+      - blog-network
+
+  # MongoDB for Blog Service
+  blog-db:
+    image: mongo:latest
+    container_name: blog-db
+    volumes:
+      - blog-db-data:/data/db
+    networks:
+      - blog-network
+
+  # MongoDB for Comment Service
+  comment-db:
+    image: mongo:latest
+    container_name: comment-db
+    volumes:
+      - comment-db-data:/data/db
+    networks:
+      - blog-network
+
+  # MongoDB for User Service
+  user-db:
+    image: mongo:latest
+    container_name: user-db
+    volumes:
+      - user-db-data:/data/db
+    networks:
+      - blog-network
+
+networks:
+  blog-network:
+    driver: bridge
+
+volumes:
+  blog-db-data:
+  comment-db-data:
+  user-db-data:

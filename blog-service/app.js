@@ -2,6 +2,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const blogRoutes = require('./routes/blogRoutes');
+require('dotenv').config();
+
+const mongoURI = process.env.MONGO_URI;
 
 
 const app = express();
@@ -13,7 +16,7 @@ app.use(bodyParser.json());
 
 // Connect to MongoDB
 mongoose
-    .connect('mongodb://localhost:27017/blogdb')
+    .connect(mongoURI)
     .then(() => console.log('Connected to MongoDB'))
     .catch(err => console.error('Error connecting to MongoDB:', err));
 

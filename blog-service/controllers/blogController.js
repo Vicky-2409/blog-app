@@ -1,6 +1,9 @@
 const Blog = require('../models/Blog'); // Import Blog model
 const mongoose = require('mongoose');
 const axios = require('axios');
+require('dotenv').config();
+
+const gatewayUrl = process.env.GATEWAY_URL
 
 // **Create a New Blog**
 const createBlog = async (req, res) => {
@@ -59,44 +62,6 @@ const getBlogById = async (req, res) => {
 };
 
 
-// const getBlogfull = async (req, res) => {
-//     const blogId = req.params.id;
-//     console.log(blogId);
-    
-    
-//     try {
-//         // Fetch the blog post
-//         const blogResponse = await axios.get(`http://localhost:4002/${blogId}`);
-//         const blog = blogResponse.data;
-
-        
-//         console.log(blog);
-        
-//         // Fetch the author details
-//         // const authorResponse = await axios.get(`http://localhost:4001/${blog.author}`);
-//         const author = blog.author;
-//         console.log(author);
-        
-//         // Fetch comments
-//         const commentsResponse = await axios.get(`http://localhost:4003/blog/${blogId}`);
-//         const comments = commentsResponse.data;
-//         console.log(comments);
-        
-//         // Enrich comments with commenter details
-//         const enrichedComments = comments.map((comment) => {
-//             const commenterResponse = comment.author
-//             return { ...comment, commenter: commenterResponse };
-//         })
-
-//         // Send the aggregated response
-//         res.status(200).json({ ...blog, author, comments: enrichedComments });
-//     } catch (err) {
-//         // console.error('Error aggregating data:', err);
-//         res.status(500).json({ message: 'Internal Server Error' });
-//     }
-// }
-
-// **Update Blog by ID**
 
 
 const getBlogfull = async (req, res) => {
@@ -109,8 +74,9 @@ const getBlogfull = async (req, res) => {
     
     try {
         // Fetch the blog post (include token in headers for API Gateway)
+
         const blogResponse = await axios.get(
-            `http://localhost:4000/api/blogs/${blogId}`,
+            `${gatewayUrl}/api/blogs/${blogId}`,
             { headers: { Authorization: token } } // Forward the token
         );
         const blog = blogResponse.data;
@@ -120,7 +86,7 @@ const getBlogfull = async (req, res) => {
 
         // Fetch comments (include token in headers)
         const commentsResponse = await axios.get(
-            `http://localhost:4000/api/comments/blog/${blogId}`,
+            `${gatewayUrl}/api/comments/blog/${blogId}`,
             { headers: { Authorization: token } }
         );
         const comments = commentsResponse.data;
